@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/563768686.svg)](https://zenodo.org/badge/latestdoi/563768686)
+
 # Jintegral
 A Python implementation of J-integral data reduction for translaminar toughness of compact tension specimens
 
