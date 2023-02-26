@@ -18,7 +18,10 @@ def compute_jintegral(
     jobs, results, path, name, frame_id, material_name, kwargs, crop_data=None
 ):
     sample = asp.AbaqusSample(
-        frame_data_path=path, name=name, material_name=material_name
+        frame_data_path=path,
+        name=name,
+        material_name=material_name,
+        material_data_path=path,
     )
 
     sample.init_computing_units(**kwargs)

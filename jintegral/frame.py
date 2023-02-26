@@ -7,12 +7,40 @@ import logging
 
 
 class Frame:
-    """Represents a frame from the DIC acquisition.
+    """
+    Private class representation of frame, aquired by DIC or extracted from FEM.
+    One frame holds the displacement fields of a sample at a time t.
+    The exact time t is irrevelant for the J-integral calculation and t is implicitly contained in the frame id.
 
-    It is intended to load, condition and save the displacement field data. These data consume a lot of memory so instantiating several frames at the same time is not recommended.
+    Attributes:
+    id : int
+        the frame id
+    data_path : Path object
+        the path to the frame displacement field data
+    metadata : dict
+        theframe metadata
+
+    Methods:
+
+    No public method.
+
+    Notes
+    -------
+
+    Field data may consume a lot of memory so instantiating several frames at the same time is not recommended.
     """
 
-    def __init__(self, id, metadata) -> None:
+    def __init__(self, id: int, metadata: dict) -> None:
+        """
+        Args:
+        id: int
+            the frame id
+        metadata: dict
+            the frame metadata
+
+        Returns:
+        None
+        """
         logging.info(f"Initialize frame {id}")
         self.id = id
         self.data_path = metadata["path"]
@@ -70,7 +98,9 @@ class Frame:
         displacement_field_df = pd.read_csv(self.data_path)
         displacement_field_df["x_ref"] = displacement_field_df["X"]
         displacement_field_df["y_ref"] = displacement_field_df["Y"]
-        displacement_field_df.X -= displacement_field_df["X"].min()
+        self.X_offset = displacement_field_df.X.min()
+        self.metadata["optical_crack_tip_e1"] -= self.X_offset
+        displacement_field_df.X -= self.X_offset
         displacement_field_df["x_u"] = (
             displacement_field_df["X"] + displacement_field_df["U"]
         )
