@@ -19,7 +19,6 @@ class Sample:
         frame_data_path,
         name="tmp_sample",
     ) -> None:
-
         # Initialise sample parameters
         self.name = name
         self._construct_frame_df(frame_data_path)
@@ -225,10 +224,9 @@ class Sample:
             width=width,
         )
 
-    def _load_material(self, name):
-
+    def _load_material(self, name, material_data_path):
         self.material = mt.Material(name=name)
-        self.material.load_properties()
+        self.material.load_properties(material_data_path=material_data_path)
         self.material.compute_compliance_tensor()
 
     def _update_output_dataframes(
@@ -290,7 +288,6 @@ class Sample:
         ]
 
     def save_results(self):
-
         self.result_path.mkdir(parents=True, exist_ok=True)
 
         self.crack_tip_df.to_csv(
@@ -309,7 +306,6 @@ class Sample:
     ######### To rewite
 
     def plot(self, crack_tip):
-
         self.jintegral.construct_fit_plots(
             frame=self.frame,
             crack_tip=crack_tip,
@@ -343,7 +339,6 @@ class Sample:
         e1_crack_tip = initial_e1_crack_tip
 
         for file in self.vic_files:
-
             frame = int(file.stem.split(sep="-")[-1].split(sep="_")[0])
 
             if frame < min_frame:

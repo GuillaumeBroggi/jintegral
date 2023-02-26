@@ -12,9 +12,11 @@ import logging
 
 
 class AbaqusSample(sp.Sample):
-    def __init__(self, frame_data_path, material_name, name="abaqus_sample") -> None:
+    def __init__(
+        self, frame_data_path, material_data_path, material_name, name="abaqus_sample"
+    ) -> None:
         super().__init__(frame_data_path, name)
-        self._load_material(name=material_name)
+        self._load_material(name=material_name, material_data_path=material_data_path)
 
     def _construct_frame_df(self, frame_data_path):
         """
@@ -70,7 +72,6 @@ class AbaqusSample(sp.Sample):
         crop_data=None,
         overwrite_interp_step=None,
     ):
-
         # Step 1: load frame data
         self._load_frame(frame_id=frame_id, crop_data=crop_data)
         if overwrite_interp_step:
@@ -121,7 +122,6 @@ class AbaqusSample(sp.Sample):
                 )
 
     def save_results(self):
-
         self.result_path.mkdir(parents=True, exist_ok=True)
 
         self.crack_tip_df.to_csv(
@@ -134,7 +134,6 @@ class AbaqusSample(sp.Sample):
         )
 
     def plot2(self, sample_size=None, moved=True):
-
         if moved:
             # Moved points
             if sample_size:
@@ -235,7 +234,6 @@ class AbaqusSample(sp.Sample):
             plot_path.mkdir(parents=True, exist_ok=True)
 
             for field in ("U", "V"):
-
                 fig = px.histogram(
                     data_frame=self.frame.displacement_field_df[f"{field}_noise"],
                     nbins=100,

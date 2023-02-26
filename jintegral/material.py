@@ -5,13 +5,10 @@ from pathlib import Path
 
 class Material:
     def __init__(self, name) -> None:
-
         self.name = name
 
-    def load_properties(self):
-        df = pd.read_csv(
-            Path(__file__).parent / "../data/materials.csv", index_col="name"
-        )
+    def load_properties(self, material_data_path):
+        df = pd.read_csv(material_data_path / "materials.csv", index_col="name")
 
         try:
             properties = df.loc[self.name].to_dict()

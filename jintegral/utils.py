@@ -5,7 +5,6 @@ from scipy.spatial import cKDTree
 
 
 def compute_interp_step(x, y, agg="mean"):
-
     # compute x and y spacing approximate for a grid interpolation
     # TODO implement a all-nearest-neigbors algorithm : https://stackoverflow.com/questions/34812372/interpolate-unstructured-x-y-z-data-on-best-grid-based-on-nearest-neighbour-dist
 
@@ -35,7 +34,6 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
-import pywt
 
 
 def load_mts_data(path):
@@ -220,14 +218,12 @@ def compute_lag(load_df_1, load_df_2, method="max_force", df1_frame_at_max_load=
         lag *= sampling_period
 
     elif method == "max_force":
-
         time1_at_max_load = load_df_1.loc[load_df_1["force"].abs().idxmax()]["time"]
         time2_at_max_load = load_df_2.loc[load_df_2["force"].abs().idxmax()]["time"]
 
         lag = time1_at_max_load - time2_at_max_load
 
     elif method == "manual_max_force":
-
         time1_at_max_load = load_df_1.query("frame == @df1_frame_at_max_load")[
             "time"
         ].to_numpy()
@@ -249,7 +245,6 @@ def compute_sampling_period(load_df):
 
 
 def resample(load_df, sampling_period):
-
     # sampling period in s
     load_df.set_index("time", inplace=True)
     load_df.index = pd.to_datetime(load_df.index, unit="s")
@@ -265,54 +260,54 @@ def resample(load_df, sampling_period):
     return load_df
 
 
-def identify_propagation_points(load_df):
+# def identify_propagation_points(load_df):
 
-    load_df["dforce"] = np.gradient(load_df["force"], edge_order=2)
+#     load_df["dforce"] = np.gradient(load_df["force"], edge_order=2)
 
-    load_df["dforce"] = pywt.threshold(
-        data=load_df["dforce"],
-        value=ut.threshold_value(coeffs=load_df["dforce"], method="sqtwolog"),
-        mode="hard",
-    )
+#     load_df["dforce"] = pywt.threshold(
+#         data=load_df["dforce"],
+#         value=ut.threshold_value(coeffs=load_df["dforce"], method="sqtwolog"),
+#         mode="hard",
+#     )
 
-    idx = load_df[
-        (load_df["dforce"].shift(1).gt(load_df["dforce"]))
-        & (load_df["dforce"].shift(-1).gt(load_df["dforce"]))
-    ].index
+#     idx = load_df[
+#         (load_df["dforce"].shift(1).gt(load_df["dforce"]))
+#         & (load_df["dforce"].shift(-1).gt(load_df["dforce"]))
+#     ].index
 
-    n = 2
-    idx_max = load_df.shape[0] - 1
+#     n = 2
+#     idx_max = load_df.shape[0] - 1
 
-    load_df["prepropagation"] = False
-    load_df["postpropagation"] = False
+#     load_df["prepropagation"] = False
+#     load_df["postpropagation"] = False
 
-    for i in idx:
-        load_df.loc[
-            load_df.loc[np.arange(max(i - n, 0), min(i + n + 1, idx_max))][
-                "force"
-            ].idxmax(),
-            "prepropagation",
-        ] = True
-        load_df.loc[
-            load_df.loc[np.arange(max(i - n, 0), min(i + n + 1, idx_max))][
-                "force"
-            ].idxmin(),
-            "postpropagation",
-        ] = True
+#     for i in idx:
+#         load_df.loc[
+#             load_df.loc[np.arange(max(i - n, 0), min(i + n + 1, idx_max))][
+#                 "force"
+#             ].idxmax(),
+#             "prepropagation",
+#         ] = True
+#         load_df.loc[
+#             load_df.loc[np.arange(max(i - n, 0), min(i + n + 1, idx_max))][
+#                 "force"
+#             ].idxmin(),
+#             "postpropagation",
+#         ] = True
 
-    # fig = px.line(data_frame=load_df, x="time", y="dforce")
-    # fig.add_scatter(x=load_df["time"], y=load_df["force"], mode="lines")
-    # fig.add_scatter(
-    #     x=load_df.query("prepropagation == True")["time"],
-    #     y=load_df.query("prepropagation == True")["force"],
-    #     mode="markers",
-    # )
-    # fig.add_scatter(
-    #     x=load_df.query("postpropagation == True")["time"],
-    #     y=load_df.query("postpropagation == True")["force"],
-    #     mode="markers",
-    # )
-    # fig.show()
+# fig = px.line(data_frame=load_df, x="time", y="dforce")
+# fig.add_scatter(x=load_df["time"], y=load_df["force"], mode="lines")
+# fig.add_scatter(
+#     x=load_df.query("prepropagation == True")["time"],
+#     y=load_df.query("prepropagation == True")["force"],
+#     mode="markers",
+# )
+# fig.add_scatter(
+#     x=load_df.query("postpropagation == True")["time"],
+#     y=load_df.query("postpropagation == True")["force"],
+#     mode="markers",
+# )
+# fig.show()
 
 
 def load_daq_data(path, usecols=("Count", "Displacement", "Force", "Time_0")):
@@ -410,7 +405,6 @@ def compute_mad(coeffs):
 
 
 def threshold_value(coeffs, method="sqtwolog"):
-
     """
     Source : pyawt library
     """
@@ -422,7 +416,6 @@ def threshold_value(coeffs, method="sqtwolog"):
     n = len(coeffs)
 
     if method == "sqtwolog":
-
         th_value = np.sqrt(2 * np.log(n))
 
     elif method == "rigrsure":

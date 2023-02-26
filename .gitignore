@@ -120,7 +120,7 @@ dmypy.json
 *.png
 *.svg
 *.ods
-*.csv
 *.html
 *.pickle
 *.pdf
+*lock*

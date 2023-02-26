@@ -1,0 +1,4 @@
+id,critical,init,optical_crack_tip_e1,J_guess
+20,TRUE,TRUE,,145.2
+30,TRUE,FALSE,,65.1
+40,TRUE,FALSE,,34.6

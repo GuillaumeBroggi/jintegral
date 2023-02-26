@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "jintegral"
+version = "1.0.1"
+description = "A Python implementation of J-integral data reduction for translaminar toughness of compact tension specimens"
+authors = ["Guillaume Broggi <25569517+GuillaumeBroggi@users.noreply.github.com>"]
+license = "BSD3"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.12"
+plotly = "^5.13.1"
+numpy = "^1.24.2"
+pandas = "^1.5.3"
+scikit-learn = "^1.2.1"
+csaps = "^1.1.0"
+scipy = "^1.10.1"
+tqdm = "^4.64.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
