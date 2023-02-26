@@ -1,4 +1,8 @@
 [![DOI](https://zenodo.org/badge/563768686.svg)](https://zenodo.org/badge/latestdoi/563768686)
+[![PyPI Latest Release](https://img.shields.io/pypi/v/jintegral.svg)](https://pypi.org/project/jintegral/)
+[![License](https://img.shields.io/pypi/l/jintegral.svg)](LICENSE)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 
 # Jintegral
 A Python implementation of J-integral data reduction for translaminar toughness of compact tension specimens
